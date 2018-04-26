@@ -2,6 +2,7 @@ from employee_database import EmployeeDatabase
 from filer import Filer
 from validator import Validator
 from chart_maker import ChartMaker
+from get_data import GetData
 
 
 class Controller:
@@ -9,6 +10,7 @@ class Controller:
     v = Validator()
     db = EmployeeDatabase()
     chart = ChartMaker()
+    gd = GetData()
 
     # Jono's
     def load_file(self, file):
@@ -45,11 +47,11 @@ class Controller:
 
     def add_to_database(self, content_list):
         for item in content_list:
-            self.db.insert_employee(item)
+            self.gd.insert_employee(item)
 
     def get_all_employees(self):
         try:
-            employees = self.db.get_all_employee()
+            employees = self.gd.get_all_employee()
             if len(employees) > 0:
                 return employees
             else:
@@ -61,20 +63,20 @@ class Controller:
 
     # renee
     def print_chart_average(self):
-        ave_sales = self.db.get_ave_sales()
-        ave_salary = self.db.get_ave_salary()
+        ave_sales = self.gd.get_ave_sales()
+        ave_salary = self.gd.get_ave_salary()
         self.chart.make_bar_average(ave_sales, ave_salary)
 
     def print_chart_sales(self):
-        employees = self.db.get_all_employee()
+        employees = self.gd.get_all_employee()
         self.chart.make_bar_sales(employees)
 
     def print_chart_pie(self):
-        employees = self.db.get_all_employee()
+        employees = self.gd.get_all_employee()
         self.chart.make_pie(employees)
 
     def print_chart_line(self):
-        employees = self.db.get_all_employee()
+        employees = self.gd.get_all_employee()
         self.chart.make_line(employees)
 
     # Chami
@@ -105,7 +107,37 @@ class Controller:
         Traceback (most recent call last):
         TypeError: list indices must be integers or slices, not tuple
 
+        >>> Controller.save_file(' ', [['A001', 'M', '26', '200', 'Normal', '20', '08-10-1991']['A001', 'M', '26', '200', 'Normal', '20', '08-10-1991']])
+        Traceback (most recent call last):
+        TypeError: list indices must be integers or slices, not tuple
 
+        >>> Controller.save_file(' .csv', [['A001', 'M', '26', '200', 'Normal', '20', '08-10-1991']['A001', 'M', '26', '200', 'Normal', '20', '08-10-1991']])
+        Traceback (most recent call last):
+        TypeError: list indices must be integers or slices, not tuple
+
+        >>> Controller.save_file('test1.', [['A001', 'M', '26', '200', 'Normal', '20', '08-10-1991']['A001', 'M', '26', '200', 'Normal', '20', '08-10-1991']])
+        Traceback (most recent call last):
+        TypeError: list indices must be integers or slices, not tuple
+
+        >>> Controller.save_file('.txt', [['A001', 'M', '26', '200', 'Normal', '20', '08-10-1991']['A001', 'M', '26', '200', 'Normal', '20', '08-10-1991']])
+        Traceback (most recent call last):
+        TypeError: list indices must be integers or slices, not tuple
+
+        >>> Controller.save_file('.xlsx', [['A001', 'M', '26', '200', 'Normal', '20', '08-10-1991']['A001', 'M', '26', '200', 'Normal', '20', '08-10-1991']])
+        Traceback (most recent call last):
+        TypeError: list indices must be integers or slices, not tuple
+
+        >>> Controller.save_file('.', [['A001', 'M', '26', '200', 'Normal', '20', '08-10-1991']['A001', 'M', '26', '200', 'Normal', '20', '08-10-1991']])
+        Traceback (most recent call last):
+        TypeError: list indices must be integers or slices, not tuple
+
+        >>> Controller.save_file(' .xlsx', [['A001', 'M', '26', '200', 'Normal', '20', '08-10-1991']['A001', 'M', '26', '200', 'Normal', '20', '08-10-1991']])
+        Traceback (most recent call last):
+        TypeError: list indices must be integers or slices, not tuple
+
+        >>> Controller.save_file('.xxx', [['A001', 'M', '26', '200', 'Normal', '20', '08-10-1991']['A001', 'M', '26', '200', 'Normal', '20', '08-10-1991']])
+        Traceback (most recent call last):
+        TypeError: list indices must be integers or slices, not tuple
 
         """
         try:
