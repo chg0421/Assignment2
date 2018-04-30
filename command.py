@@ -1,6 +1,7 @@
 from cmd import Cmd
 from controller import Controller
-import sys
+from command_line import CommandLine
+# import sys
 
 
 class Command(Cmd):
@@ -8,6 +9,7 @@ class Command(Cmd):
     Command File Version 1
     """
     c = Controller()
+    cl = CommandLine()
 
     def __init__(self):
         Cmd.__init__(self)
@@ -94,6 +96,7 @@ class Command(Cmd):
         /sp to view the salary detail of individual employee in the pie chart
         :return:
         """
+
         if option and option.strip():
             if option.lower() == "/a":
                 self.c.print_chart_average()
@@ -118,45 +121,53 @@ class Command(Cmd):
         print("Quitting.....")
         return True
 
-    # renee
-    @staticmethod
-    def greeting():
-        try:
-            print(sys.argv[1])
-        except NameError as e:
-            print(e)
-        except IndexError as e:
-            print ("Index Error :" , e)
+    def command_line_arguments(self):
+        self.cl.greeting()
+        self.cl.set_name()
+        self.cl.set_number_of_command()
 
-    # Jono
-    @staticmethod
-    def set_name():
-        try:
-            ans = input("What is your name?")
-            sys.argv[2] = ans
-            print("Welcome " + sys.argv[2])
-            print("for help with commands type help")
-        except NameError as e:
-            print(e)
-        except IndexError as e:
-            print ("Index Error :" , e)
 
-    # Chami -- added 19-03-2018
-    @staticmethod
-    def set_number_of_command():
-        try:
-            print("Number of Command-line Arguements: ", len(sys.argv))
-            print("You are working on : ", sys.argv[0])
-        except NameError as e:
-            print(e)
-        except IndexError as e:
-            print ("Index Error :" , e)
+    # Added inside another class command_line.py (CommandLine)
+    # # renee
+    # @staticmethod
+    # def greeting():
+    #     try:
+    #         print(sys.argv[1])
+    #     except NameError as e:
+    #         print(e)
+    #     except IndexError as e:
+    #         print ("Index Error :" , e)
+    #
+    # # Jono
+    # @staticmethod
+    # def set_name():
+    #     try:
+    #         ans = input("What is your name?")
+    #         sys.argv[2] = ans
+    #         print("Welcome " + sys.argv[2])
+    #         print("for help with commands type help")
+    #     except NameError as e:
+    #         print(e)
+    #     except IndexError as e:
+    #         print ("Index Error :" , e)
+    #
+    # # Chami -- added 19-03-2018
+    # @staticmethod
+    # def set_number_of_command():
+    #     try:
+    #         print("Number of Command-line Arguements: ", len(sys.argv))
+    #         print("You are working on : ", sys.argv[0])
+    #     except NameError as e:
+    #         print(e)
+    #     except IndexError as e:
+    #         print ("Index Error :" , e)
 
 
 
 if __name__ == "__main__":
     command = Command()
-    command.greeting()
-    command.set_name()
-    command.set_number_of_command()
+    # command.greeting()
+    # command.set_name()
+    # command.set_number_of_command()
+    command.command_line_arguments()
     command.cmdloop()
