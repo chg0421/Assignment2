@@ -1,7 +1,6 @@
 from cmd import Cmd
 from controller import Controller
 from command_line import CommandLine
-# import sys
 
 
 class Command(Cmd):
@@ -16,14 +15,8 @@ class Command(Cmd):
         self.prompt = ">>> "
         self.my_name = "unknown"
 
-    # Jono
-    def do_load(self, file_name):
-        """
-        Syntax: load [file]
-        :param file:  can be a .txt, .csv or .xlsx
-        do include the extension e.g test.csv
-        :return:
-        """
+    # load and save valid employee into the database
+    def valid_employee(self, file_name):
         employees = self.c.load_file(file_name)
         if employees:
             while True:
@@ -41,21 +34,28 @@ class Command(Cmd):
                 else:
                     print("Invalid input try again")
 
-            if len(employees["Invalid"]) is not 0:
-                while True:
-                    ans = input("There's" + str(len(employees['Invalid'])) +
-                                " Employee(s) invalid"
-                                "\n Do you want to save to invalid.csv?"
-                                "\n [Y/N]"
-                                "\n >>>")
-                    if ans.upper() == "Y":
-                        self.c.save_invalid(employees['Invalid'])
-                        break
-                    elif ans.upper() == "N":
-                        print("Invalid Data not saved")
-                        break
-                    else:
-                        print("Invalid Input")
+    # load and save invalid employee into the database
+    def invalid_employee(self, file_name):
+        employees = self.c.load_file(file_name)
+        if len(employees["Invalid"]) is not 0:
+            while True:
+                ans = input("There's" + str(len(employees['Invalid'])) +
+                            " Employee(s) invalid"
+                            "\n Do you want to save to invalid.csv?"
+                            "\n [Y/N]"
+                            "\n >>>")
+                if ans.upper() == "Y":
+                    self.c.save_invalid(employees['Invalid'])
+                    break
+                elif ans.upper() == "N":
+                    print("Invalid Data not saved")
+                    break
+                else:
+                    print("Invalid Input")
+
+    def do_store(self, file_name):
+        self.valid_employee(file_name)
+        self.invalid_employee(file_name)
 
     # Jono
     def add_data(self, content):
@@ -127,47 +127,7 @@ class Command(Cmd):
         self.cl.set_number_of_command()
 
 
-    # Added inside another class command_line.py (CommandLine)
-    # # renee
-    # @staticmethod
-    # def greeting():
-    #     try:
-    #         print(sys.argv[1])
-    #     except NameError as e:
-    #         print(e)
-    #     except IndexError as e:
-    #         print ("Index Error :" , e)
-    #
-    # # Jono
-    # @staticmethod
-    # def set_name():
-    #     try:
-    #         ans = input("What is your name?")
-    #         sys.argv[2] = ans
-    #         print("Welcome " + sys.argv[2])
-    #         print("for help with commands type help")
-    #     except NameError as e:
-    #         print(e)
-    #     except IndexError as e:
-    #         print ("Index Error :" , e)
-    #
-    # # Chami -- added 19-03-2018
-    # @staticmethod
-    # def set_number_of_command():
-    #     try:
-    #         print("Number of Command-line Arguements: ", len(sys.argv))
-    #         print("You are working on : ", sys.argv[0])
-    #     except NameError as e:
-    #         print(e)
-    #     except IndexError as e:
-    #         print ("Index Error :" , e)
-
-
-
 if __name__ == "__main__":
     command = Command()
-    # command.greeting()
-    # command.set_name()
-    # command.set_number_of_command()
     command.command_line_arguments()
     command.cmdloop()
